@@ -151,6 +151,32 @@ class DPSController {
         var numberOfProjectiles: Float = 0f,
         var reloadSpeed: Float = 0f,
         var magSize: Float = 0f,**/
+        var currentMagState = dd.magSize
+        var timeSinceLastAttack = 0
+        var totalDamage = 0f
+        var timeSpentReloading = 0
+        var reloading = false
+
+        for( i in 0 .. time.toInt()){
+
+            if(currentMagState == 0) reloading = true
+
+            if(reloading){
+                timeSpentReloading++
+                if(timeSpentReloading > dd.reloadSpeed){
+                    reloading = false
+                }else
+                    continue
+            }
+
+            if(timeSinceLastAttack >= dd.timeBetweenAttacks){
+                totalDamage = dd.damagePerHit * dd.numberOfProjectiles
+                currentMagState--
+                timeSinceLastAttack = 0
+            }
+            timeSinceLastAttack++
+
+        }
 
 
 
