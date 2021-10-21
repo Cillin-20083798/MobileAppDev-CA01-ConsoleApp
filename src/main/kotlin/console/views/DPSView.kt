@@ -42,14 +42,14 @@ class DPSView {
         println()
     }
 
-    fun showDirectDamage(directDamage : DirectDamageJSONStore) {
+    fun showDirectDamage(directDamage : DirectDamageModel) {
         if(directDamage != null)
             println("Damage Details [ $directDamage ]")
         else
             println("Not Found...")
     }
 
-    fun showDamageOverTime(damageOverTime : DamageOverTimeJSONStore) {
+    fun showDamageOverTime(damageOverTime : DamageOverTimeModel) {
         if(damageOverTime != null)
             println("Damage Details [ $damageOverTime ]")
         else
@@ -183,5 +183,37 @@ class DPSView {
         }
         return false
     }
+
+    fun getId() : Long {
+        var strId : String?
+        var searchId: Long
+
+        print("Enter id to Search/Update : ")
+        strId = readLine()!!
+        searchId = if (strId.toLongOrNull() != null && !strId.isEmpty())
+            strId.toLong()
+        else
+            -9
+        return searchId
+    }
+
+    /**
+    fun addDamageSource(){
+        var input: Int?
+        print("Would you like to add a 1) DOT or 2) Direct Damage?")
+        input = readLine()!!.toIntOrNull()
+
+        if(input == 1){
+            var newDot = DamageOverTimeModel()
+
+            if(addDamageOverTime(newDot)){
+
+            }
+
+        }else if (input ==2){
+
+        }
+    }
+    **/
 
 }
