@@ -6,6 +6,7 @@ import mu.KotlinLogging
 import console.helpers.*
 import console.models.DOTStore
 import java.util.*
+import kotlin.collections.ArrayList
 
 private val logger = KotlinLogging.logger {}
 
@@ -55,7 +56,29 @@ class DamageOverTimeJSONStore : DOTStore {
     }
 
     internal fun logAll() {
-        dots.forEach { println("${it}") }
+        dots.forEach {
+            print("ID : ")
+            print(it.id)
+            print("\nName : ")
+            print(it.name)
+            print(", Tick Time : ")
+            print(it.tickTime)
+            print(", Damage Per Tick : ")
+            print(it.damagePerTick)
+            print(", Initial Damage : ")
+            print(it.initialDamage)
+            print(", Duration : ")
+            print(it.duration)
+            print("\nPercent Increase Per Tick : ")
+            print(it.percentIncreasePerTick)
+            print(", DPS Dot Duration : ")
+            print(it.dpsDuration)
+            print(", DPS 60 seconds : ")
+            print(it.dps60)
+            print(", DPS 5 seconds : ")
+            print(it.dps5)
+            println()
+        }
     }
 
     private fun serialize() {
@@ -71,5 +94,26 @@ class DamageOverTimeJSONStore : DOTStore {
     override fun delete(damageOverTime: DamageOverTimeModel) {
         dots.remove(damageOverTime)
         serialize()
+    }
+
+    fun searchDOTByName(name: String) : ArrayList<DamageOverTimeModel>?{
+        var resultArray = arrayListOf<DamageOverTimeModel>()
+        dots.forEach {
+            if (it.name.contains(name)) {
+                resultArray.add(it)
+            }
+        }
+        return resultArray
+    }
+
+    fun searchDOTForHighDPS(value : Float) : ArrayList<DamageOverTimeModel> {
+        var highestDPSArray = arrayListOf<DamageOverTimeModel>()
+
+        dots.forEach {
+            if (it.dps60!! >= value) {
+                highestDPSArray.add(it)
+            }
+        }
+        return highestDPSArray
     }
 }

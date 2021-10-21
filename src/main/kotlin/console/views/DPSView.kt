@@ -4,6 +4,8 @@ import console.models.DirectDamageModel
 import DirectDamageJSONStore
 import DamageOverTimeJSONStore
 import console.models.DamageOverTimeModel
+import kotlin.math.roundToInt
+import kotlin.math.floor
 
 class DPSView {
 
@@ -19,8 +21,12 @@ class DPSView {
         println(" 4. Update a Direct Damage Source")
         println(" 5. List All Damage Over Time Sources")
         println(" 6. List All Direct Damage Sources")
-        println(" 7. Search For Damage Source")
-        println(" 8. Search For Damage Source")
+        println(" 7. Search For Damage Over Time Source By Name")
+        println(" 8. Search For Direct Damage Source By Name")
+        println(" 9. Search For Damage Over Time Source By DPS")
+        println(" 10. Search For Direct Damage Source By DPS")
+        println(" 11. Delete a Damage Over Time Source")
+        println(" 12. Delete a Direct Damage Source")
         println("-1. Exit")
         println()
         print("Enter Option : ")
@@ -31,14 +37,16 @@ class DPSView {
             -9
         return option
     }
-    /**1 -> controller.addNewDOTSource()
+    /** 1 -> controller.addNewDOTSource()
     2 -> controller.addNewDDSource()
     3 -> controller.updateDamageOverTime()
     4 -> controller.updateDirectDamage()
-    5 -> controller.listDD()
-    6 -> controller.listDOT()
-    7 -> controller.searchDamageSource()
-    8 -> controller.searchDamageSource()**/
+    5 -> controller.listDOT()
+    6 -> controller.listDD()
+    7 -> controller.searchDotByName()
+    8 -> controller.searchDDByName()
+    9 -> controller.deleteDot()
+    10 -> controller.deleteDD()**/
 
     fun listAllDirectDamage(dds: DirectDamageJSONStore) {
         println("Listing All Direct Damage")
@@ -83,14 +91,14 @@ class DPSView {
         print("Enter the reload speed if applicable: ")
         directDamage.reloadSpeed = readLine()!!.toFloat()
         print("Enter a mag size if applicable: ")
-        directDamage.magSize = readLine()!!.toFloat()
+        directDamage.magSize = readLine()!!.toInt()
 
         return directDamage.name.isNotEmpty()
                 && !directDamage.damagePerHit.isNaN()
                 && !directDamage.timeBetweenAttacks.isNaN()
                 && !directDamage.numberOfProjectiles.isNaN()
                 && !directDamage.reloadSpeed.isNaN()
-                && !directDamage.magSize.isNaN()
+                && directDamage.magSize != null
     }
 
     fun addDamageOverTime(damageOverTime: DamageOverTimeModel) : Boolean {
@@ -125,7 +133,7 @@ class DPSView {
         var tempTimeBetweenAttacks: Float?
         var tempNumberOfProjectiles: Float?
         var tempReloadSpeed: Float?
-        var tempMagSize: Float?
+        var tempMagSize: Int?
 
         if (directDamage != null) {
             print("Enter a new name for [ " + directDamage.name + " ] : ")
@@ -139,7 +147,7 @@ class DPSView {
             print("Enter a new reload speed value if applicable else set 0, was [ " + directDamage.reloadSpeed + " ] : ")
             tempReloadSpeed = readLine()!!.toFloatOrNull()
             print("Enter a new mag size value if applicable else set 0, was [ " + directDamage.magSize + " ] : ")
-            tempMagSize = readLine()!!.toFloatOrNull()
+            tempMagSize = readLine()!!.toIntOrNull()
 
             //if (!tempName.isNullOrEmpty() && tempDamagePerHit != null && tempTimeBetweenAttacks != null && tempNumberOfProjectiles != null && tempReloadSpeed != null && tempMagSize != null) {
             if (!tempName.isNullOrEmpty())
@@ -160,10 +168,12 @@ class DPSView {
             if(tempMagSize != null)
                 directDamage.magSize = tempMagSize
 
+            directDamage.dps60 = calculateDPS(directDamage, 60f)
+            directDamage.dps5 = calculateDPS(directDamage, 5f)
             //    return true
             //}
         }
-        return false
+        return true
     }
 
 
@@ -211,7 +221,9 @@ class DPSView {
             if(tempPercentIncrease != null)
                 damageOverTime.percentIncreasePerTick = tempPercentIncrease
 
-
+            damageOverTime.dps60 = calculateDPS(damageOverTime, 60f)
+            damageOverTime.dps5 = calculateDPS(damageOverTime, 5f)
+            damageOverTime.dpsDuration = calculateDPS(damageOverTime, damageOverTime.duration)
                 //return true
             //}
         }
@@ -229,6 +241,96 @@ class DPSView {
         else
             -9
         return searchId
+    }
+
+    fun calculateDPS (dot: DamageOverTimeModel, time: Float) : Float{
+
+        /**var tickTime: Float = 0f,
+        var damagePerTick: Float = 0f,
+        var initialDamage: Float = 0f,
+        var duration: Float = 0f,
+        var percentIncreasePerTick: Float = 0f,**/
+        var totalDamage = 0f;
+        var currentTickDamage = dot.damagePerTick
+        var totalDotDamage = 0f
+        var totalTicksPerDuration = floor((1 / dot.tickTime) * dot.duration)
+        var iterateCount = 0f
+        var totalTicksLeft = 0f
+
+        if(time >= dot.duration) {
+            //Gets the total amount of times the dot will cycle
+            iterateCount = floor(time / dot.duration) // floor this //6
+
+            //Calc each dot value
+            for (i in 1..totalTicksPerDuration.roundToInt()) {
+                currentTickDamage += currentTickDamage * dot.percentIncreasePerTick
+                totalDotDamage += currentTickDamage // 2000
+            }
+
+            totalDamage = (totalDotDamage + dot.initialDamage) * iterateCount //13200
+        }
+
+        //Finding the remainder ticks
+        currentTickDamage = dot.damagePerTick
+        totalTicksLeft = ((time / dot.duration) - iterateCount) * totalTicksPerDuration
+        if (totalTicksLeft == 0f) return totalDamage / time
+
+        //Calc each tick
+        for (i in 1 .. totalTicksLeft.roundToInt()) {
+            println(i)
+            currentTickDamage += currentTickDamage * dot.percentIncreasePerTick
+            totalDotDamage += currentTickDamage
+        }
+
+        return (totalDamage + totalDotDamage + dot.initialDamage) / time
+
+
+    }
+
+    fun calculateDPS (dd: DirectDamageModel, time: Float) : Float {
+        /**var damagePerHit: Float = 0f,
+        var timeBetweenAttacks: Float = 0f,
+        var numberOfProjectiles: Float = 0f,
+        var reloadSpeed: Float = 0f,
+        var magSize: Float = 0f,**/
+
+
+        if(dd.magSize == 0){
+            var totalAttacks = floor(time / dd.timeBetweenAttacks) //floor this
+            println(totalAttacks)
+            return totalAttacks * (dd.damagePerHit * dd.numberOfProjectiles) / time
+        }else{
+            var timeToShootMag = dd.magSize * dd.timeBetweenAttacks
+
+            var totalBullets = floor(time/dd.timeBetweenAttacks)
+
+            var reloads = totalBullets / dd.magSize
+
+
+            var timeReloading = timeToShootMag * reloads
+
+            var totalAttacks = time / dd.timeBetweenAttacks - timeReloading
+
+            return totalAttacks * (dd.damagePerHit * dd.numberOfProjectiles) / time
+        }
+
+    }
+
+    fun getStringInput() : String{
+        var str : String?
+
+        print("Enter string to Search/Update : ")
+        str = readLine()!!
+        return str
+    }
+
+    fun getFloatInput() : Float{
+        var valToSearch : Float
+
+        print("Enter string to Search/Update : ")
+        valToSearch = readLine()!!.toFloat()
+
+        return valToSearch
     }
 
     /**

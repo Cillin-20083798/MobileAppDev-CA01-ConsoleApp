@@ -5,6 +5,7 @@ import console.views.DPSView
 import DamageOverTimeJSONStore
 import DirectDamageJSONStore
 import mu.KotlinLogging
+import kotlin.math.roundToInt
 
 class DPSController {
 
@@ -34,6 +35,7 @@ class DPSController {
         var newDD = DirectDamageModel()
 
         if(dpsView.addDirectDamage(newDD)){
+
             ddStore.create(newDD)
         }else{
             logger.info("Failed to add, try again")
@@ -57,7 +59,8 @@ class DPSController {
             if (dpsView.updateDirectDamage(aDD)){
                 ddStore.update(aDD)
                 dpsView.showDirectDamage(aDD)
-                logger.info(" Direct Damaged Updated : [ $aDD.name ]")
+
+                logger.info(" Direct Damaged Updated : [ $aDD ]")
             }else
                 logger.info("Failed to update, please try again")
         }else
@@ -84,7 +87,7 @@ class DPSController {
             if (dpsView.updateDamageOverTime(aDOT)){
                 dotStore.update(aDOT)
                 dpsView.showDamageOverTime(aDOT)
-                logger.info(" Damage Over Time Updated : [ $aDOT.name ]")
+                logger.info(" Damage Over Time Updated : [ $aDOT ]")
             }else
                 logger.info("Failed to update, please try again")
         }else
@@ -133,54 +136,47 @@ class DPSController {
         }
     }
 
-    fun searchDamageSource(){
+    fun searchDotByName(){
+        var nameToSearch = dpsView.getStringInput()
+        var foundDot = dotStore.searchDOTByName(nameToSearch.lowercase())
+        if(!foundDot!!.isEmpty()){
+            foundDot.forEach { println(it) }
+        }else{
 
-    }
-
-    fun CalculateDPS (dot: DamageOverTimeModel, time: Float) {
-
-
-
-
-
-    }
-
-    fun CalculateDPS (dd: DirectDamageModel, time: Float) {
-        /**var damagePerHit: Float = 0f,
-        var timeBetweenAttacks: Float = 0f,
-        var numberOfProjectiles: Float = 0f,
-        var reloadSpeed: Float = 0f,
-        var magSize: Float = 0f,**/
-        var currentMagState = dd.magSize
-        var timeSinceLastAttack = 0
-        var totalDamage = 0f
-        var timeSpentReloading = 0
-        var reloading = false
-
-        for( i in 0 .. time.toInt()){
-
-            if(currentMagState == 0) reloading = true
-
-            if(reloading){
-                timeSpentReloading++
-                if(timeSpentReloading > dd.reloadSpeed){
-                    reloading = false
-                }else
-                    continue
-            }
-
-            if(timeSinceLastAttack >= dd.timeBetweenAttacks){
-                totalDamage = dd.damagePerHit * dd.numberOfProjectiles
-                currentMagState--
-                timeSinceLastAttack = 0
-            }
-            timeSinceLastAttack++
-
+            println("No Match")
         }
-
-
-
     }
+
+    fun searchDDByName(){
+        var nameToSearch = dpsView.getStringInput()
+        var foundDot = ddStore.searchDDByName(nameToSearch.lowercase())
+        if(!foundDot!!.isEmpty()){
+            foundDot.forEach { println(it) }
+        }else{
+
+            println("No Match")
+        }
+    }
+
+    fun searchDOTForDPSVal(){
+        var valueToSearch = dpsView.getFloatInput()
+        var foundVals = dotStore.searchDOTForHighDPS(valueToSearch)
+        if(!foundVals.isEmpty()){
+            foundVals.forEach { println(it) }
+        }else
+            println("No Match")
+    }
+
+    fun searchDDForDPSVal(){
+        var valueToSearch = dpsView.getFloatInput()
+        var foundVals = ddStore.searchDDForHighDPS(valueToSearch)
+        if(!foundVals.isEmpty()){
+            foundVals.forEach { println(it) }
+        }else
+            println("No Match")
+    }
+
+
 
     /**
     println(" 2. Update a Damage Source")

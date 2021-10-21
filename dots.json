@@ -1,0 +1,38 @@
+[
+  {
+    "id": -6478807015149561791,
+    "name": "bleed",
+    "tickTime": 0.5,
+    "damagePerTick": 100.0,
+    "initialDamage": 200.0,
+    "duration": 10.0,
+    "percentIncreasePerTick": 0.0,
+    "dpsDuration": 220.0,
+    "dps60": 220.0,
+    "dps5": 240.0
+  },
+  {
+    "id": -5896525557939082562,
+    "name": "poison",
+    "tickTime": 1.0,
+    "damagePerTick": 150.0,
+    "initialDamage": 0.0,
+    "duration": 10.0,
+    "percentIncreasePerTick": 0.25,
+    "dpsDuration": 623.49194,
+    "dps60": 623.49194,
+    "dps5": 307.76367
+  },
+  {
+    "id": 7806108810594575081,
+    "name": "pokeyStick",
+    "tickTime": 0.33,
+    "damagePerTick": 230.0,
+    "initialDamage": 500.0,
+    "duration": 4.0,
+    "percentIncreasePerTick": 0.1,
+    "dpsDuration": 1477.5558,
+    "dps60": 1477.5558,
+    "dps5": 2531.5752
+  }
+]

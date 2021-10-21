@@ -5,6 +5,7 @@ import console.models.DirectDamageModel
 import mu.KotlinLogging
 import console.helpers.*
 import console.models.DDStore
+import console.models.DamageOverTimeModel
 import java.util.*
 
 private val logger = KotlinLogging.logger {}
@@ -58,7 +59,27 @@ class DirectDamageJSONStore : DDStore {
     }
 
     internal fun logAll() {
-        dds.forEach { println("${it}") }
+        dds.forEach {
+            print("ID : ")
+            print(it.id)
+            print("\nName : ")
+            print(it.name)
+            print(", Damage Per Hit : ")
+            print(it.damagePerHit)
+            print(", Time Between Attacks : ")
+            print(it.timeBetweenAttacks)
+            print(", Number Of Projectiles : ")
+            print(it.numberOfProjectiles)
+            print(", Reload Speed : ")
+            print(it.reloadSpeed)
+            print("\nMagazine Size : ")
+            print(it.magSize)
+            print(", DPS 60 seconds : ")
+            print(it.dps60)
+            print(", DPS 5 seconds : ")
+            print(it.dps5)
+            println()
+        }
     }
 
     private fun serialize() {
@@ -74,5 +95,26 @@ class DirectDamageJSONStore : DDStore {
     override fun delete(directDamage: DirectDamageModel) {
         dds.remove(directDamage)
         serialize()
+    }
+
+    fun searchDDByName(name: String) : ArrayList<DirectDamageModel>?{
+        var resultArray = arrayListOf<DirectDamageModel>()
+        dds.forEach {
+            if (it.name.contains(name)) {
+                resultArray.add(it)
+            }
+        }
+        return resultArray
+    }
+
+    fun searchDDForHighDPS(value : Float) : ArrayList<DirectDamageModel> {
+        var highestDPSArray = arrayListOf<DirectDamageModel>()
+
+        dds.forEach {
+            if (it.dps60!! >= value) {
+                highestDPSArray.add(it)
+            }
+        }
+        return highestDPSArray
     }
 }
