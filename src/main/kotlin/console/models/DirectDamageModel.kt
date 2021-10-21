@@ -7,6 +7,7 @@ data class DirectDamageModel(var id: Long = 0,
                              var numberOfProjectiles: Float = 0f,
                              var reloadSpeed: Float = 0f,
                              var magSize: Float = 0f,
-                             var dps: Float ?){
+                             var dps60: Float? = 0f,
+                             var dps5: Float? = 0f){
 
 }

@@ -55,7 +55,7 @@ class DamageOverTimeJSONStore : DOTStore {
     }
 
     internal fun logAll() {
-        dots.forEach { logger.info("${it}") }
+        dots.forEach { println("${it}") }
     }
 
     private fun serialize() {

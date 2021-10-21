@@ -53,6 +53,16 @@ class DPSController {
         var searchId = dpsView.getId()
         val aDD = searchDD(searchId)
 
+        if (aDD != null){
+            if (dpsView.updateDirectDamage(aDD)){
+                ddStore.update(aDD)
+                dpsView.showDirectDamage(aDD)
+                logger.info(" Direct Damaged Updated : [ $aDD.name ]")
+            }else
+                logger.info("Failed to update, please try again")
+        }else
+            println("Damage not found")
+
     }
 
     fun searchDD() {
@@ -65,8 +75,62 @@ class DPSController {
         return foundDD
     }
 
-    fun listDamageSource(){
+    fun updateDamageOverTime(){
+        dpsView.listAllDamageOverTime(dotStore)
+        var searchId = dpsView.getId()
+        val aDOT = searchDOT(searchId)
 
+        if (aDOT != null){
+            if (dpsView.updateDamageOverTime(aDOT)){
+                dotStore.update(aDOT)
+                dpsView.showDamageOverTime(aDOT)
+                logger.info(" Damage Over Time Updated : [ $aDOT.name ]")
+            }else
+                logger.info("Failed to update, please try again")
+        }else
+            println("Damage not found")
+
+    }
+
+    fun searchDOT() {
+        val aDOT = searchDOT(dpsView.getId())!!
+        dpsView.showDamageOverTime(aDOT)
+    }
+
+    fun searchDOT(id: Long) : DamageOverTimeModel? {
+
+        var foundDot = dotStore.findOne(id)
+        return foundDot
+    }
+
+    fun deleteDot() : Boolean {
+        dpsView.listAllDamageOverTime(dotStore)
+        var searchId = dpsView.getId()
+        val aDOT = searchDOT(searchId)
+
+        if(aDOT != null){
+            dotStore.delete(aDOT)
+            println("Successfully deleted")
+            return true
+        }else {
+            println("failed to delete please try again")
+            return false
+        }
+    }
+
+    fun deleteDD() : Boolean {
+        dpsView.listAllDirectDamage(ddStore)
+        var searchId = dpsView.getId()
+        val aDD = searchDD(searchId)
+
+        if(aDD != null){
+            ddStore.delete(aDD)
+            println("Successfully deleted")
+            return true
+        }else {
+            println("failed to delete please try again")
+            return false
+        }
     }
 
     fun searchDamageSource(){
@@ -76,9 +140,18 @@ class DPSController {
     fun CalculateDPS (dot: DamageOverTimeModel, time: Float) {
 
 
+
+
+
     }
 
     fun CalculateDPS (dd: DirectDamageModel, time: Float) {
+        /**var damagePerHit: Float = 0f,
+        var timeBetweenAttacks: Float = 0f,
+        var numberOfProjectiles: Float = 0f,
+        var reloadSpeed: Float = 0f,
+        var magSize: Float = 0f,**/
+
 
 
     }

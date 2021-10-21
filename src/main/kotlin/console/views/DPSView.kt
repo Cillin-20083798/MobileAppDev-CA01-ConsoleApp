@@ -13,10 +13,14 @@ class DPSView {
         var input: String?
 
         println("MAIN MENU")
-        println(" 1. Add New Damage Source")
-        println(" 2. Update a Damage Source")
-        println(" 3. List All Damage Sources")
-        println(" 4. Search For Damage Source")
+        println(" 1. Add New Damage Over Time Source")
+        println(" 2. Add New Direct Damage Source")
+        println(" 3. Update a Damage Over Time Source")
+        println(" 4. Update a Direct Damage Source")
+        println(" 5. List All Damage Over Time Sources")
+        println(" 6. List All Direct Damage Sources")
+        println(" 7. Search For Damage Source")
+        println(" 8. Search For Damage Source")
         println("-1. Exit")
         println()
         print("Enter Option : ")
@@ -27,6 +31,14 @@ class DPSView {
             -9
         return option
     }
+    /**1 -> controller.addNewDOTSource()
+    2 -> controller.addNewDDSource()
+    3 -> controller.updateDamageOverTime()
+    4 -> controller.updateDirectDamage()
+    5 -> controller.listDD()
+    6 -> controller.listDOT()
+    7 -> controller.searchDamageSource()
+    8 -> controller.searchDamageSource()**/
 
     fun listAllDirectDamage(dds: DirectDamageJSONStore) {
         println("Listing All Direct Damage")
@@ -36,7 +48,7 @@ class DPSView {
     }
 
     fun listAllDamageOverTime(dots: DamageOverTimeJSONStore) {
-        println("Listing All Direct Damage")
+        println("Listing All Damage Over Time")
         println()
         dots.logAll()
         println()
@@ -106,7 +118,7 @@ class DPSView {
 
     }
 
-    fun updateDirectDamageData(directDamage: DirectDamageModel) : Boolean {
+    fun updateDirectDamage(directDamage: DirectDamageModel) : Boolean {
 
         var tempName: String?
         var tempDamagePerHit: Float?
@@ -129,16 +141,27 @@ class DPSView {
             print("Enter a new mag size value if applicable else set 0, was [ " + directDamage.magSize + " ] : ")
             tempMagSize = readLine()!!.toFloatOrNull()
 
-            if (!tempName.isNullOrEmpty() && tempDamagePerHit != null && tempTimeBetweenAttacks != null && tempNumberOfProjectiles != null && tempReloadSpeed != null && tempMagSize != null) {
+            //if (!tempName.isNullOrEmpty() && tempDamagePerHit != null && tempTimeBetweenAttacks != null && tempNumberOfProjectiles != null && tempReloadSpeed != null && tempMagSize != null) {
+            if (!tempName.isNullOrEmpty())
                 directDamage.name = tempName
+
+            if(tempDamagePerHit != null)
                 directDamage.damagePerHit = tempDamagePerHit
+
+            if(tempTimeBetweenAttacks != null)
                 directDamage.timeBetweenAttacks = tempTimeBetweenAttacks
+
+            if(tempNumberOfProjectiles != null)
                 directDamage.numberOfProjectiles = tempNumberOfProjectiles
+
+            if(tempReloadSpeed != null)
                 directDamage.reloadSpeed = tempReloadSpeed
+
+            if(tempMagSize != null)
                 directDamage.magSize = tempMagSize
 
-                return true
-            }
+            //    return true
+            //}
         }
         return false
     }
@@ -161,27 +184,38 @@ class DPSView {
             tempTickTime = readLine()!!.toFloatOrNull()
             print("Enter a new damage per tick value, was [ " + damageOverTime.damagePerTick + " ] : ")
             tempDamagePerTick = readLine()!!.toFloatOrNull()
-            print("Enter a new time between attacks value, was [ " + damageOverTime.initialDamage + " ] : ")
+            print("Enter a new initial damage value, was [ " + damageOverTime.initialDamage + " ] : ")
             tempInitialDamage = readLine()!!.toFloatOrNull()
-            print("Enter a new number of projectiles value, was [ " + damageOverTime.duration + " ] : ")
+            print("Enter a new duration value, was [ " + damageOverTime.duration + " ] : ")
             tempDuration = readLine()!!.toFloatOrNull()
-            print("Enter a new reload speed value if applicable else set 0, was [ " + damageOverTime.percentIncreasePerTick + " ] : ")
+            print("Enter a new percent increase per tick (0 if none 1 if doubles every tick), was [ " + damageOverTime.percentIncreasePerTick + " ] : ")
             tempPercentIncrease = readLine()!!.toFloatOrNull()
 
 
-            if (!tempName.isNullOrEmpty() && tempTickTime != null && tempDamagePerTick != null && tempInitialDamage != null && tempDuration != null && tempPercentIncrease != null) {
+            //if (!tempName.isNullOrEmpty() && tempTickTime != null && tempDamagePerTick != null && tempInitialDamage != null && tempDuration != null && tempPercentIncrease != null) {
+            if(!tempName.isNullOrEmpty())
                 damageOverTime.name = tempName
+
+            if(tempTickTime != null)
                 damageOverTime.tickTime = tempTickTime
+
+            if(tempDamagePerTick != null)
                 damageOverTime.damagePerTick = tempDamagePerTick
+
+            if(tempInitialDamage != null)
                 damageOverTime.initialDamage = tempInitialDamage
+
+            if(tempDuration != null)
                 damageOverTime.duration = tempDuration
+
+            if(tempPercentIncrease != null)
                 damageOverTime.percentIncreasePerTick = tempPercentIncrease
 
 
-                return true
-            }
+                //return true
+            //}
         }
-        return false
+        return true
     }
 
     fun getId() : Long {

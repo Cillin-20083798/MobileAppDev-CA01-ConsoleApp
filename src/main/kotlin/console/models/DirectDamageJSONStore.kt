@@ -58,7 +58,7 @@ class DirectDamageJSONStore : DDStore {
     }
 
     internal fun logAll() {
-        dds.forEach { logger.info("${it}") }
+        dds.forEach { println("${it}") }
     }
 
     private fun serialize() {

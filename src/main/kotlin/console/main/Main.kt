@@ -16,10 +16,16 @@ import console.controllers.DPSController
         do {1
             input = controller.menu()
             when(input) {
-                1 -> controller.addNewDamageSource()
-                2 -> controller.updateDamageSource()
-                3 -> controller.listDamageSource()
-                4 -> controller.searchDamageSource()
+                1 -> controller.addNewDOTSource()
+                2 -> controller.addNewDDSource()
+                3 -> controller.updateDamageOverTime()
+                4 -> controller.updateDirectDamage()
+                5 -> controller.listDOT()
+                6 -> controller.listDD()
+                7 -> controller.searchDamageSource()
+                8 -> controller.searchDamageSource()
+                9 -> controller.deleteDot()
+                10 -> controller.deleteDD()
                 -1 -> println("Exiting App")
                 else -> println("Invalid Option")
             }
@@ -27,8 +33,6 @@ import console.controllers.DPSController
         } while (input != -1)
         println("Goodbye!")
     }
-
-
 
     fun GoodInput(lowVal: Int, highVal: Int) : Int {
         var goodInput = false
