@@ -34,5 +34,41 @@
     "dpsDuration": 1477.5558,
     "dps60": 1477.5558,
     "dps5": 2531.5752
+  },
+  {
+    "id": -8931189577538977936,
+    "name": "Fire",
+    "tickTime": 0.33,
+    "damagePerTick": 20.0,
+    "initialDamage": 0.0,
+    "duration": 5.0,
+    "percentIncreasePerTick": 0.6,
+    "dpsDuration": 12287.162,
+    "dps60": 12287.162,
+    "dps5": 12287.162
+  },
+  {
+    "id": 853881586062587240,
+    "name": "Fly",
+    "tickTime": 0.75,
+    "damagePerTick": 100.0,
+    "initialDamage": 30.0,
+    "duration": 20.0,
+    "percentIncreasePerTick": 0.0,
+    "dpsDuration": 131.5,
+    "dps60": 131.5,
+    "dps5": 146.0
+  },
+  {
+    "id": 8927881874471093454,
+    "name": "WaterElemnt",
+    "tickTime": 0.5,
+    "damagePerTick": 100.0,
+    "initialDamage": 30.0,
+    "duration": 3.0,
+    "percentIncreasePerTick": 0.1,
+    "dpsDuration": 292.90573,
+    "dps60": 292.90573,
+    "dps5": 453.58887
   }
 ]

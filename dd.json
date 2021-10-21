@@ -20,5 +20,16 @@
     "magSize": 30,
     "dps60": 90.0,
     "dps5": 90.0
+  },
+  {
+    "id": -1794831315122754667,
+    "name": "dagger",
+    "damagePerHit": 400.0,
+    "timeBetweenAttacks": 0.5,
+    "numberOfProjectiles": 1.0,
+    "reloadSpeed": 0.0,
+    "magSize": 0,
+    "dps60": 800.0,
+    "dps5": 800.0
   }
 ]

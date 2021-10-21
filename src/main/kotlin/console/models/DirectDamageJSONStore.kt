@@ -100,7 +100,7 @@ class DirectDamageJSONStore : DDStore {
     fun searchDDByName(name: String) : ArrayList<DirectDamageModel>?{
         var resultArray = arrayListOf<DirectDamageModel>()
         dds.forEach {
-            if (it.name.contains(name)) {
+            if (it.name.lowercase().contains(name)) {
                 resultArray.add(it)
             }
         }

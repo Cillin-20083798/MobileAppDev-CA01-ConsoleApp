@@ -277,7 +277,6 @@ class DPSView {
 
         //Calc each tick
         for (i in 1 .. totalTicksLeft.roundToInt()) {
-            println(i)
             currentTickDamage += currentTickDamage * dot.percentIncreasePerTick
             totalDotDamage += currentTickDamage
         }
@@ -327,7 +326,7 @@ class DPSView {
     fun getFloatInput() : Float{
         var valToSearch : Float
 
-        print("Enter string to Search/Update : ")
+        print("Enter a number to Search/Update : ")
         valToSearch = readLine()!!.toFloat()
 
         return valToSearch

@@ -99,7 +99,7 @@ class DamageOverTimeJSONStore : DOTStore {
     fun searchDOTByName(name: String) : ArrayList<DamageOverTimeModel>?{
         var resultArray = arrayListOf<DamageOverTimeModel>()
         dots.forEach {
-            if (it.name.contains(name)) {
+            if (it.name.lowercase().contains(name)) {
                 resultArray.add(it)
             }
         }
