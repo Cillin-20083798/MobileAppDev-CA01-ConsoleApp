@@ -9,8 +9,6 @@ import console.controllers.DPSController
 
     fun main(args: Array<String>) {
 
-        println("Placemark Kotlin App Version 1.0")
-
         var input: Int
 
         do {1
